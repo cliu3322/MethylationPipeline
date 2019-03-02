@@ -7,6 +7,7 @@ const customHeader = () => ({
 });
 
 const base = (method, url, data = {}) => {
+  console.log(`${jwtConfig.fetchUrl}${url}`)
   return fetch(`${jwtConfig.fetchUrl}${url}`, {
     method,
     headers: customHeader(),
