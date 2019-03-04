@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { message, Upload, Form, Progress, Row, Col, Icon, Modal, Button} from 'antd';
-import SuperFetch from '../../helpers/superFetch';
 import reqwest from 'reqwest';
-
+import SuperFetch from '../../helpers/superFetch';
 
 const FormItem = Form.Item;
 
@@ -45,11 +44,9 @@ class FormUpload extends Component {
       uploading: true,
     });
 
-    //SuperFetch.post('uploadfile',formData).then(res => console.log(res))
 
 
-    //uploadFile(formData);
-    // You can use any AJAX library you like
+
     reqwest({
       url: '/api/uploadfile',
       method: 'post',
@@ -61,6 +58,7 @@ class FormUpload extends Component {
           uploading: false,
         });
         message.success('upload successfully.');
+        SuperFetch['get']('allUploadFiles').then(res => console.log(res))
       },
       error: () => {
         this.setState({
@@ -92,7 +90,7 @@ class FormUpload extends Component {
         this.setState({ fileList: fileList })
 
       },
-      listType:"picture-card",
+      listType:"text",
       multiple: true,
       onPreview:(file) => {
         this.setState({
@@ -107,10 +105,9 @@ class FormUpload extends Component {
     return (
       <Form >
         <Upload {...props1}>
-          <div>
-            <Icon type="plus" />
-            <div className="ant-upload-text">Upload</div>
-          </div>
+          <Button>
+            <Icon type="upload" /> Click to Upload
+          </Button>
         </Upload>
         <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
           <img alt="example" style={{ width: '100%' }} src={previewImage} />

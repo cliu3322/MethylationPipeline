@@ -6,6 +6,7 @@ import Config from './config';
 import { authenticate, authError } from './middleware';
 import logger from 'morgan';
 import multer from 'multer';
+import fs from 'fs';
 
 
 const { port, secretKey, expiredAfter } = Config;
@@ -72,7 +73,6 @@ app.post('/api/secret/test', (req, res) => {
 
 var storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		console.log('req.body')
 		cb(null, './uploads/')
 	},
 	filename: function (req, file, cb) {
@@ -91,11 +91,35 @@ var upload = multer({
 });
 
 app.post('/api/uploadfile',upload.array('files[]'), (req, res) => {
+	console.log(req.file)
 	res.json({
 		status: 200,
 		message: 'succcesful1111',
 	});
 });
+
+app.get('/api/allUploadFiles', (req, res) => {
+
+	fs.readdir('./uploads', (err, files) => {
+		res.json({
+			status: 200,
+			files: files,
+		});
+	});
+
+});
+
+app.get('/api/trim', (req, res) => {
+
+	fs.readdir('./uploads', (err, files) => {
+		res.json({
+			status: 200,
+			files: files,
+		});
+	});
+
+});
+
 
 app.listen(port, () => {
 	console.log('Isomorphic JWT login ' + port);
