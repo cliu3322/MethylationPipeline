@@ -3,7 +3,7 @@ export default {
 };
 
 const siteConfig = {
-  siteName: 'ISOMORPHIC',
+  siteName: 'Methylation',
   siteIcon: 'ion-flash',
   footerText: 'Isomorphic ©2018 Created by RedQ, Inc',
 };

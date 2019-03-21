@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { message, Upload, Form, Progress, Row, Col, Icon, Modal, Button} from 'antd';
+import { message, Upload, Form, Icon, Modal, Button} from 'antd';
 import reqwest from 'reqwest';
 import SuperFetch from '../../helpers/superFetch';
+import actions from '../../redux/steps/actions'
 
-const FormItem = Form.Item;
-
+const { getFiles } = actions;
 
 class FormUpload extends Component {
 
@@ -58,7 +58,10 @@ class FormUpload extends Component {
           uploading: false,
         });
         message.success('upload successfully.');
-        SuperFetch['get']('allUploadFiles').then(res => console.log(res))
+        SuperFetch['get']('allUploadFiles').then(res => {
+          console.log('asdfds')
+          this.props.getFiles(res.files);
+        })
       },
       error: () => {
         this.setState({
@@ -71,7 +74,6 @@ class FormUpload extends Component {
 
 
   render() {
-    const {file1completed, file2completed} = this.state
 
     const { previewVisible, previewImage } = this.state;
 
@@ -125,11 +127,11 @@ class FormUpload extends Component {
 }
 
 function mapStateToProps(state) {
-
+  console.log(state)
   return {
 
   };
 }
 
 const WrappedFormUpload = Form.create()(FormUpload);
-export default connect(mapStateToProps,{  } )(WrappedFormUpload);
+export default connect(mapStateToProps,{ getFiles } )(WrappedFormUpload);

@@ -18,8 +18,6 @@ class FormTrim extends Component {
     };
 
     this.click = this.click.bind(this);
-
-
   }
 
 
