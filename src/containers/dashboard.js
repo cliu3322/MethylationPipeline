@@ -22,6 +22,7 @@ const chartSimple: IChart = {
     node1: {
       id: 'node1',
       type: 'custom',
+      position: {
         x: 300,
         y: 100,
       },
