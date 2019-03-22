@@ -5,9 +5,129 @@ import LayoutContentWrapper from '../components/utility/layoutWrapper';
 
 import { cloneDeep, mapValues } from 'lodash'
 
-import { FlowChartWithState, INodeInnerDefaultProps  } from "@mrblenny/react-flow-chart";
-import { chartSimple } from "./Chartnode/pipeline"; // Demo chart state
 
+import { FlowChart, INodeInnerDefaultProps, IChart } from "@mrblenny/react-flow-chart";
+
+
+//import { chartSimple } from "./Chartnode/pipeline"; // Demo chart state
+import * as actions from './Chartnode/actions'
+
+
+const chartSimple: IChart = {
+  offset: {
+    x: 0,
+    y: 0,
+  },
+  nodes: {
+    node1: {
+      id: 'node1',
+      type: 'custom',
+        x: 300,
+        y: 100,
+      },
+      ports: {
+        port1: {
+          id: 'port1',
+          type: 'output',
+          properties: {
+            value: 'yes',
+          },
+        },
+      },
+    },
+    node2: {
+      id: 'node2',
+      type: 'input-output',
+      position: {
+        x: 300,
+        y: 300,
+      },
+      ports: {
+        port1: {
+          id: 'port1',
+          type: 'input',
+        },
+        port2: {
+          id: 'port2',
+          type: 'output',
+        },
+      },
+    },
+    node3: {
+      id: 'node3',
+      type: 'input-output',
+      position: {
+        x: 100,
+        y: 600,
+      },
+      ports: {
+        port1: {
+          id: 'port1',
+          type: 'input',
+        },
+        port2: {
+          id: 'port2',
+          type: 'output',
+        },
+      },
+    },
+    node4: {
+      id: 'node4',
+      type: 'input-output',
+      position: {
+        x: 500,
+        y: 600,
+      },
+      ports: {
+        port1: {
+          id: 'port1',
+          type: 'input',
+        },
+        port2: {
+          id: 'port2',
+          type: 'output',
+        },
+      },
+    },
+  },
+  links: {
+    link1: {
+      id: 'link1',
+      from: {
+        nodeId: 'node1',
+        portId: 'port1',
+      },
+      to: {
+        nodeId: 'node2',
+        portId: 'port1',
+      },
+    },
+    link2: {
+      id: 'link2',
+      from: {
+        nodeId: 'node2',
+        portId: 'port2',
+      },
+      to: {
+        nodeId: 'node3',
+        portId: 'port1',
+      },
+    },
+    link3: {
+      id: 'link3',
+      from: {
+        nodeId: 'node2',
+        portId: 'port2',
+      },
+      to: {
+        nodeId: 'node4',
+        portId: 'port1',
+      },
+    },
+  },
+  selected: {},
+  hovered: {},
+}
 
 const Sidebar = styled.div`
   width: 200px;
@@ -84,37 +204,26 @@ class Dashboard extends Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
 
     };
   }
 
   render() {
-    const chart = cloneDeep(chartSimple);
-    console.log(chart.selected.type)
+    const chart = cloneDeep(chartSimple)
+    const stateActions = mapValues(actions, (func: any) => (...args: any) => this.setState(func(...args)))
+    console.log(actions)
     return (
       <LayoutContentWrapper style={{ height: '100vh' }}>
         <Content>
 
-          <FlowChartWithState
-          initialValue={chartSimple}
-          Components={ {
-            NodeInner: NodeInnerCustom,
-          }}
+          <FlowChart
+          chart={chartSimple}
+          callbacks={stateActions}
           />
         </Content>
 
-        <Sidebar>
-          { chart.selected.type
-          ? <Message>
-              <div>Type: {chart.selected.type}</div>
-              <div>ID: {chart.selected.id}</div>
-            </Message>
-          : <Message>Click on a Node, Port or Link</Message> }
-        </Sidebar>
-        <SidebarFeedback>
-          <Message>A live message</Message>
-        </SidebarFeedback>
       </LayoutContentWrapper>
     );
   }

@@ -7,6 +7,7 @@ import { authenticate, authError } from './middleware';
 import logger from 'morgan';
 import multer from 'multer';
 import fs from 'fs';
+const fileUpload = require('express-fileupload');
 
 
 const { port, secretKey, expiredAfter } = Config;
@@ -28,6 +29,7 @@ app
 	.use(bodyParser.urlencoded({ extended: true }))
 	.use(bodyParser.json())
 	.use(cors());
+app.use(fileUpload());
 app.use(logger('dev')); // Log requests to API using morgan
 
 	// Enable CORS from client-side
@@ -97,6 +99,38 @@ app.post('/api/uploadfile',upload.array('files[]'), (req, res) => {
 		message: 'succcesful1111',
 	});
 });
+
+app.post('/api/uploadfiletypescript1', (req, res, next) => {
+
+  let fastqFile = req.files.file;
+
+	fastqFile.mv(`./uploads/test1.fastq`, function(err) {
+		if (err) {
+			console.log(err)
+			return res.status(500).send(err);
+		}
+
+		res.json({file: `public/${req.body.filename}.jpg`});
+	});
+
+
+})
+
+app.post('/api/uploadfiletypescript2', (req, res, next) => {
+
+  let fastqFile = req.files.file;
+
+	fastqFile.mv(`./uploads/test2.fastq`, function(err) {
+		if (err) {
+			console.log(err)
+			return res.status(500).send(err);
+		}
+
+		res.json({file: `public/${req.body.filename}.jpg`});
+	});
+
+
+})
 
 app.get('/api/allUploadFiles', (req, res) => {
 
