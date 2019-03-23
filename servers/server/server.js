@@ -101,7 +101,7 @@ app.post('/api/uploadfile',upload.array('files[]'), (req, res) => {
 });
 
 app.post('/api/uploadfiletypescript1', (req, res, next) => {
-
+console.log( req.files.file)
   let fastqFile = req.files.file;
 
 	fastqFile.mv(`./uploads/test1.fastq`, function(err) {
@@ -117,7 +117,7 @@ app.post('/api/uploadfiletypescript1', (req, res, next) => {
 })
 
 app.post('/api/uploadfiletypescript2', (req, res, next) => {
-
+	console.log( req.files.file)
   let fastqFile = req.files.file;
 
 	fastqFile.mv(`./uploads/test2.fastq`, function(err) {
